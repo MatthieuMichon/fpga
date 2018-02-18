@@ -19,5 +19,5 @@ rm -rf ${BUILD_DIR}
 mkdir -p ${BUILD_DIR}
 cd ${BUILD_DIR}
 
-figlet -f slant "${FIRMWARE_NAME}"
+figlet -w 200 -f slant "${FIRMWARE_NAME}"
 vivado -mode batch -source ../script.tcl
