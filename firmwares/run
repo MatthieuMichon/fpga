@@ -11,8 +11,6 @@ if [ ! -d "${FIRMWARE_NAME}" ]; then
     exit 1
 fi
 
-VIVADO=/home/oyaji/opt/Xilinx/Vivado/2017.4/bin/
-
 ################################################################################
 # Create build directory
 
@@ -22,4 +20,4 @@ mkdir -p ${BUILD_DIR}
 cd ${BUILD_DIR}
 
 figlet -f slant "${FIRMWARE_NAME}"
-${VIVADO}/vivado -mode batch -source ../script.tcl
+vivado -mode batch -source ../script.tcl
