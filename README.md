@@ -6,6 +6,7 @@ FPGA related repo
 |---|---|---|
 |arty_led|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|LED4 on when 200 MHz PLL locks|
 |arty_uart_loopback|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|UART loopback (on ``ttyUSB1``)|
+|arty_button_uart_tx|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|Transmit char ``A`` (on ``ttyUSB1``) when btn0 is pressed|
 
 # Usage
 
