@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+    echo "Usage: ./$(basename "$0") <bit file>"
+    exit 1
+fi
+
+BIT_FILE=$1
+if [ ! -f "${BIT_FILE}" ]; then
+    echo "ERROR: ${BIT_FILE} no such directory"
+    exit 1
+fi
+
+TMP_WORK_DIR="./tmp_upload"
+rm -rf ${TMP_WORK_DIR}
+mkdir -p ${TMP_WORK_DIR}
+cd ${TMP_WORK_DIR}
+
+################################################################################
+
+cat <<EOF > upload.tcl
+set bit_file [lindex \$argv 0]
+open_hw
+connect_hw_server
+open_hw_target
+set_property PROGRAM.FILE ../\$bit_file [lindex [get_hw_devices] 0]
+program_hw_devices [lindex [get_hw_devices] 0]
+EOF
+
+################################################################################
+# Create build directory
+
+figlet -w 200 -f slant Upload Bitstream
+vivado -mode batch -source ./upload.tcl -tclargs ${BIT_FILE}
