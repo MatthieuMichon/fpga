@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DESIGN_UNIT="pll_torrent"
+BASE_DIR="../../../../.."
+ADLIB_DIR="${BASE_DIR}/adlib"
+XILINX_LIB_DIR="${BASE_DIR}/xilinx-vivado"
+XILINX_FLAGS="--ieee=synopsys -fexplicit -P${XILINX_LIB_DIR} "
+
+rm -f ./work-obj93.cf
+ghdl -i -P${XILINX_LIB_DIR} \
+	../${DESIGN_UNIT}.vhd \
+	./*.vhd
+ghdl -e ${XILINX_FLAGS} ${DESIGN_UNIT}
+ghdl -r ${XILINX_FLAGS} ${DESIGN_UNIT}_tb --stop-time=35us -gTB_DURATION_US=1000 --vcd=run.vcd
