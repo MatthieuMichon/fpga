@@ -9,6 +9,7 @@ FPGA related repo
 |arty_button_uart_tx|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|Transmit char ``A`` (on ``ttyUSB1``) when btn0 is pressed|
 |arty_string_uart|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|Transmit a string ``this is a test`` (on ``ttyUSB1``) when btn0 is pressed|
 |arty_pll_torrent|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|Serial linkage of all five MMCMs and five PLLs|
+|arty_term_color|[Digilent Arty A7-35T](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board-for-makers-and-hobbyists/)|Transmit via UART to value of SW0 on BTN0 press with some color via ASCII escape codes|
 
 # Usage
 
