@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DESIGN_UNIT="uart_tx_frame_buffer"
+BASE_DIR="../../../../.."
+ADLIB_PATH="${BASE_DIR}/adlib"
+XILINX_PATH="${BASE_DIR}/xilinx-vivado"
+XILINX_FLAGS="--ieee=synopsys -fexplicit -P${XILINX_PATH} "
+
+rm -rf ./build
+mkdir -p ./build
+cd ./build
+
+ghdl -i --work=adlib ${ADLIB_PATH}/mem/dpram/*.vhd
+ghdl -i ${XILINX_FLAGS} \
+	../../*.vhd \
+	../*.vhd
+ghdl -e ${XILINX_FLAGS} ${DESIGN_UNIT}
+ghdl -r ${XILINX_FLAGS} ${DESIGN_UNIT}_tb --stop-time=50us --vcd=run.vcd
