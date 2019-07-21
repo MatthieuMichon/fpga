@@ -1,0 +1,30 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sun Jul 21 19:26:47 2019
+# Process ID: 24318
+# Current directory: /home/oyaji/work/fpga/firmwares/digilent_arty_A7-35T/blink_leds
+# Command line: vivado -log build/vivado.log -jou build/vivado.jou -mode batch -source program.tcl
+# Log file: /home/oyaji/work/fpga/firmwares/digilent_arty_A7-35T/blink_leds/build/vivado.log
+# Journal file: /home/oyaji/work/fpga/firmwares/digilent_arty_A7-35T/blink_leds/build/vivado.jou
+#-----------------------------------------------------------
+source program.tcl
+# cd ./build
+# open_hw
+# connect_hw_server
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2019.1
+  **** Build date : May 24 2019 at 15:06:40
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+
+# open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210319A2D008A
+# set_property PROGRAM.FILE bitstream.bit [lindex [get_hw_devices] 0]
+# program_hw_devices [lindex [get_hw_devices] 0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+INFO: [Common 17-206] Exiting Vivado at Sun Jul 21 19:26:57 2019...

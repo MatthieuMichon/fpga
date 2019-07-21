@@ -1,3 +1,5 @@
+This repository contains FPGA related projects: IP cores; FPGA board files; and EDA projects.
+
 FPGA related repo
 
 # Firmware Projects
