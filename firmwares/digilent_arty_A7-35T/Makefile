@@ -1,11 +1,10 @@
-SUBDIRS = blink_leds
+SUBDIRS := $(wildcard */.)
+
+.PHONY: all $(SUBDIRS) clean
 
 all: $(SUBDIRS)
 
-.PHONY: $(SUBDIRS)
+clean: $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $@
-
-clean: $(SUBDIRS)
-	$(MAKE) -C $@ clean
+	$(MAKE) -C $@ $(MAKECMDGOALS)

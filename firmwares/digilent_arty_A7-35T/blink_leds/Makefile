@@ -45,4 +45,4 @@ program: $(BUILD_DIR)/bitstream.bit
 	$(VIVADO_BATCH) program.tcl
 
 clean:
-	-rm -rf ./$(BUILD_DIR)/
+	-rm -rf ./$(BUILD_DIR)/ ./.Xil/ ./vivado.log ./vivado.jou
