@@ -2,7 +2,7 @@ Blink all LEDs
 
 # Overview
 
-Go through all the steps (include optimization steps) for generating the configuration data bits binary stream (also simply called ``bitstream``) configuration file.
+Goes through all the steps (include optimization steps) for generating the configuration data bits binary stream (also simply called ``bitstream``) configuration file.
 
 The makefile provides a stand-alone target rule for uploading the bitstream to the FPGA and reconfigure-it.
 

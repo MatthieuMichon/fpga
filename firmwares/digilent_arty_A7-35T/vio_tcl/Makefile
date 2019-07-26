@@ -19,5 +19,8 @@ $(BUILD_DIR):
 build: $(BUILD_DIR)
 	$(VIVADO_BATCH) build.tcl
 
+program: $(BUILD_DIR)/bitstream.bit
+	$(VIVADO_BATCH) program.tcl
+
 clean:
 	-rm -rf ./$(BUILD_DIR)/ ./.Xil/ ./vivado.log ./vivado.jou
