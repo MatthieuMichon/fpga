@@ -1,10 +1,26 @@
 /* VHDL-2008 */
 library ieee;
-use ieee.std_logic_1164.all;
 use ieee.numeric_std_unsigned.all;
+use ieee.std_logic_1164.all;
+library unisim;
+use unisim.vcomponents.all;
 
 entity top_vio_tcl is
     port (
+        -- MII
+        eth_col: in std_ulogic;
+        eth_crs: in std_ulogic;
+        eth_mdc: out std_ulogic;
+        eth_mdio: inout std_ulogic;
+        eth_ref_clk: out std_ulogic;
+        eth_rstn: out std_ulogic;
+        eth_rx_clk: in std_ulogic;
+        eth_rx_dv: in std_ulogic;
+        eth_rxd: in std_ulogic_vector(4-1 downto 0);
+        eth_rxerr: in std_ulogic;
+        eth_tx_clk: in std_ulogic;
+        eth_tx_en: out std_ulogic;
+        eth_txd: out std_ulogic_vector(4-1 downto 0);
         -- LEDs
         led0_b: out std_ulogic;
         led0_g: out std_ulogic;
@@ -51,25 +67,24 @@ architecture a_top_vio_tcl of top_vio_tcl is
     signal led5_slv: std_logic_vector(0 downto 0);
     signal led6_slv: std_logic_vector(0 downto 0);
     signal led7_slv: std_logic_vector(0 downto 0);
---    COMPONENT vio_arty
---  PORT (
---    clk : IN STD_LOGIC;
---    probe_in0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
---    probe_in1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
---    probe_in2 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
---    probe_out0 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
---    probe_out1 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
---    probe_out2 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
---    probe_out3 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
---    probe_out4 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
---    probe_out5 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
---    probe_out6 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
---    probe_out7 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
---  );
---END COMPONENT;
+    signal mii_vio: std_ulogic_vector(3-1 downto 0);
+
+    signal eth_rx_clk_bufg: std_ulogic;
+    signal eth_tx_clk_bufg: std_ulogic;
+    signal mmcm0_fb: std_ulogic;
+    signal mmcm1_fb: std_ulogic;
+    signal mmcm2_fb: std_ulogic;
+    signal mmcm_rst: std_ulogic;
+    signal mmcm0_locked: std_ulogic;
+    signal mmcm1_locked: std_ulogic;
+    signal mmcm2_locked: std_ulogic;
+    signal mmcm1_clk25: std_ulogic;
+    signal mmcm2_clk25: std_ulogic;
+
 begin
     sw <= (sw3, sw2, sw1, sw0);
     btn <= (btn3, btn2, btn1, btn0);
+    mii_vio <= (mmcm0_locked, mmcm1_locked, mmcm2_locked);
     led0 <= (led0_r, led0_g, led0_b);
     led1 <= (led1_r, led1_g, led1_b);
     led2 <= (led2_r, led2_g, led2_b);
@@ -84,6 +99,7 @@ begin
         probe_in0 => rstb_slv,
         probe_in1 => sw,
         probe_in2 => btn,
+        probe_in3 => mii_vio,
         probe_out0 => led0,
         probe_out1 => led1,
         probe_out2 => led2,
@@ -93,4 +109,66 @@ begin
         probe_out6 => led6_slv,
         probe_out7 => led7_slv
     );
+
+    mmcm_rst <= not rstb;
+
+    mmcme2_base_mii_ref_clk: mmcme2_base
+        generic map (
+            CLKIN1_PERIOD => 10.0,
+            CLKFBOUT_MULT_F => 10.0, -- 2..64
+            CLKOUT1_DIVIDE => 40 -- 1..128
+        )
+        port map (
+            clkin1 => gclk100,
+            clkfbin => mmcm0_fb,
+            clkfbout => mmcm0_fb,
+            clkout1 => eth_ref_clk,
+            locked => mmcm0_locked,
+            rst => mmcm_rst,
+            pwrdwn => '0'
+        );
+
+    bufg_rx_clk: bufg
+        port map (
+            i => eth_rx_clk,
+            o => eth_rx_clk_bufg
+        );
+
+    mmcme2_base_mii_rx_clk: mmcme2_base
+        generic map (
+            CLKIN1_PERIOD => 40.0,
+            CLKFBOUT_MULT_F => 32.0,
+            CLKOUT1_DIVIDE => 32
+        )
+        port map (
+            clkin1 => eth_rx_clk_bufg,
+            clkfbin => mmcm1_fb,
+            clkfbout => mmcm1_fb,
+            clkout1 => mmcm1_clk25,
+            locked => mmcm1_locked,
+            rst => mmcm_rst,
+            pwrdwn => '0'
+        );
+
+    bufg_tx_clk: bufg
+        port map (
+            i => eth_tx_clk,
+            o => eth_tx_clk_bufg
+        );
+
+    mmcme2_base_mii_tx_clk: mmcme2_base
+        generic map (
+            CLKIN1_PERIOD => 40.0,
+            CLKFBOUT_MULT_F => 32.0,
+            CLKOUT1_DIVIDE => 32
+        )
+        port map (
+            clkin1 => eth_tx_clk_bufg,
+            clkfbin => mmcm2_fb,
+            clkfbout => mmcm2_fb,
+            clkout1 => mmcm2_clk25,
+            locked => mmcm2_locked,
+            rst => mmcm_rst,
+            pwrdwn => '0'
+        );
 end architecture;

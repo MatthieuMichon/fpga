@@ -1,8 +1,10 @@
 # ------------------------------------------------------------------------------
 
 BUILD_DIR = ./build/
-VIVADO_BATCH = vivado \
-	-log $(BUILD_DIR)/vivado.log -jou $(BUILD_DIR)/vivado.jou \
+VIVADO_BATCH = \
+	vivado \
+	-log $(BUILD_DIR)/vivado.log \
+	-jou $(BUILD_DIR)/vivado.jou \
 	-mode batch -source
 
 .PHONY: all check build program clean
